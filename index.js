@@ -5,7 +5,7 @@ const app = express();
 const PORT = 3400;
 app.use(express.json());
 
-app.use(require("./routes/groups.rout"));
+app.use(require("./routes/groups.route"));
 app.use(require("./routes/students.route"));
 
 mongoose
