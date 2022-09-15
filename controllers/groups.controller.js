@@ -2,6 +2,7 @@ const Group = require("../models/Group.model");
 const Student = require("../models/Student.model");
 
 module.exports.groupsController = {
+  //создать группу
   add: async (req, res) => {
     try {
       const { name, onStudy, week } = req.body;
@@ -15,7 +16,7 @@ module.exports.groupsController = {
       res.json(e.message);
     }
   },
-
+  //редактирование группы по айди
   edit: async (req, res) => {
     try {
       const group = await Group.findByIdAndUpdate(req.params.id, req.body, {
@@ -26,7 +27,7 @@ module.exports.groupsController = {
       res.json(e.message);
     }
   },
-
+  //удаление группы по айди
   delete: async (req, res) => {
     await Group.findByIdAndDelete(req.params.id, (err, group) => {
       if (err) return res.json(err);
@@ -34,7 +35,7 @@ module.exports.groupsController = {
       res.json(`Group ${group.name} deleted`);
     });
   },
-
+  //показать все группы
   get: async (req, res) => {
     try {
       const group = await Group.find();
@@ -43,7 +44,7 @@ module.exports.groupsController = {
       res.json(e.message);
     }
   },
-
+  //показать студентов определенной по айди группы
   getGroupPeople: async (req, res) => {
     try {
       const group = await Student.find({ group: req.params.id }).populate(
@@ -55,6 +56,7 @@ module.exports.groupsController = {
       res.json(e.message);
     }
   },
+  //покзаать группы по неделе обучения
   getGroupByWeek: async (req, res) => {
     try {
       const group = await Group.find({ week: req.params.week });
@@ -63,6 +65,7 @@ module.exports.groupsController = {
       res.json(e.message);
     }
   },
+  //показать группы, завершившие обучение
   getFinishedGroup: async (req, res) => {
     try {
       const group = await Group.find({ onStudy: false });

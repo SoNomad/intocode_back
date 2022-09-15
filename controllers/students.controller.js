@@ -1,6 +1,7 @@
 const Student = require("../models/Student.model");
 
 module.exports.studentsController = {
+  //добавить студента
   add: async (req, res) => {
     try {
       const { name, payStatus, notes, group, status } = req.body;
@@ -16,7 +17,7 @@ module.exports.studentsController = {
       res.json(e);
     }
   },
-
+  //редактировать через айди
   edit: async (req, res) => {
     try {
       const student = await Student.findByIdAndUpdate(req.params.id, req.body, {
@@ -27,7 +28,7 @@ module.exports.studentsController = {
       res.json(e.message);
     }
   },
-
+  //удалить по айди
   delete: async (req, res) => {
     await Student.findByIdAndDelete(req.params.id, (err, student) => {
       if (err) return res.json(err);
@@ -35,7 +36,7 @@ module.exports.studentsController = {
       res.json(`Student ${student.name} deleted`);
     });
   },
-
+  //показать всех студентов
   getAll: async (req, res) => {
     try {
       const student = await Student.find({}, { name: 1, group: 1 }).populate(
@@ -47,6 +48,7 @@ module.exports.studentsController = {
       res.json(e);
     }
   },
+  //добавить примечания студенту по айди
   addNote: async (req, res) => {
     try {
       const student = await Student.findByIdAndUpdate(
@@ -61,7 +63,7 @@ module.exports.studentsController = {
       res.json(e.message);
     }
   },
-
+  //показать примечания студента по айди
   getSudentNote: async (req, res) => {
     try {
       const notes = await Student.findById(req.params.id, {
@@ -73,6 +75,7 @@ module.exports.studentsController = {
       res.json(e);
     }
   },
+  //показать студентов по статусу (0% / 50% / 100%) оплаты
   getStudentByPayStatus: async (req, res) => {
     try {
       const student = await Student.find({ payStatus: req.params.paystatus });
@@ -81,6 +84,7 @@ module.exports.studentsController = {
       res.json(e);
     }
   },
+  //показать студентов по статусу (study / searching / offered / working) (searching - в поисках работы)
   getStudentByStatus: async (req, res) => {
     try {
       const student = await Student.find(
@@ -93,6 +97,7 @@ module.exports.studentsController = {
       res.json(e);
     }
   },
+  //показать процент студентов в определенной группе, получивших оффер
   getOffered: async (req, res) => {
     try {
       const groupArr = await Student.find({ group: req.params.id });
